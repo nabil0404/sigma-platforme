@@ -8,27 +8,22 @@
     
     <title>منصة سِيجْمَا التعليمية للتعليم المتوسط - مادة الرياضيات</title>
     
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fonts & Icons (Fixed Version) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.geogebra.org/apps/deployggb.js"></script>
     
-    <!-- Config & Styles -->
     <script>
-        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { cairo: ['Cairo', 'sans-serif'] }, colors: { sigma: { 50: '#f5f3ff', 600: '#6366f1', 900: '#1e1b4b', 950: '#090514' } } } } }
+        (()=>{tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']},colors:{sigma:{50:'#f5f3ff',600:'#6366f1',900:'#1e1b4b',950:'#090514'}}}}};})();
     </script>
     <style>
+        /* CSS Block */
         body{font-family:'Cairo',sans-serif;transition:background-color .3s,color .3s;user-select:none;-webkit-user-select:none}
         input,textarea,select,[contenteditable="true"],.allow-select{user-select:text!important;-webkit-user-select:text!important}
         .math-grid-layer{background-image:radial-gradient(#4f46e5 1px,transparent 1px);background-size:24px 24px}
@@ -53,15 +48,12 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen">
 
-    <!-- جدار الحماية -->
     <div id="sigma-security-wall">
         <h1 style="color:#ef4444;font-size:28px;font-weight:bold;margin-bottom:10px;">🚫 عذراً، الوصول غير مصرح به!</h1>
         <p style="color:#94a3b8;font-size:18px;">هذا المحتوى محمي ومخصص للعمل داخل النطاق الرسمي لمنصة سيجما فقط.</p>
     </div>
 
-    <!-- المنصة -->
     <div id="appContainer" style="display:none;width:100%;min-height:100vh;visibility:hidden;opacity:0;">
-        
         <div id="admin-status-bar" class="bg-amber-500 text-slate-950 font-black py-2.5 px-4 flex flex-col md:flex-row justify-center items-center gap-4 text-xs md:text-sm shadow-md hidden relative z-50">
             <div><i class="fa-solid fa-screwdriver-wrench mr-1 animate-bounce"></i> أنت في وضع مدير المنصة حالياً! الصلاحيات مفعلة بالكامل.</div>
             <div class="bg-amber-600/30 px-3 py-1 rounded-lg flex gap-4 border border-amber-600/50">
@@ -87,15 +79,24 @@
                             <p class="text-[8px] md:text-[10px] text-slate-400 font-bold">بوابة التعليم المتوسط - رياضيات</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <!-- زر الأجندة -->
+                        <button onclick="openAgendaListModal()" class="relative flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 px-3 py-1.5 rounded-lg border border-indigo-200 dark:border-indigo-700 hover:bg-indigo-100 transition shadow-sm font-bold text-[10px] md:text-xs">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span id="agenda-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
+                        </button>
+                        
                         <!-- الساعة الرقمية -->
                         <div class="hidden sm:flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-400 shadow-inner min-w-[80px]">
                             <span id="live-time" class="text-xs font-black" dir="ltr">--:--</span>
                             <span id="live-date" class="text-[8px] font-bold">--/--/----</span>
                         </div>
+                        
+                        <!-- الدخول -->
                         <div id="student-auth-container" class="flex gap-2">
                             <button onclick="openStudentAuthModal()" id="btn-student-login" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold px-3 py-1.5 rounded-lg text-[10px] md:text-xs flex items-center gap-1.5 transition-all shadow-sm">
-                                <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">دخول المشترك</span>
+                                <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">المشترك</span>
                             </button>
                             <div id="student-profile-btn" class="hidden flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-lg">
                                 <div class="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_5px_#10b981]"></div>
@@ -113,9 +114,7 @@
                     <a href="javascript:void(0)" onclick="navFilter('exam')" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">بنك الفروض والاختبارات</a>
                     <a href="javascript:void(0)" onclick="navFilter('game')" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">برمجيات وألعاب</a>
                     <a href="javascript:void(0)" onclick="openWhiteboard()" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">السبورة التفاعلية</a>
-                    <a href="javascript:void(0)" onclick="requestVipSubscription()" class="text-amber-600 dark:text-amber-400 hover:text-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg transition border border-amber-200 dark:border-amber-700/50">
-                        <i class="fa-solid fa-crown"></i> طلب اشتراك VIP
-                    </a>
+                    <a href="javascript:void(0)" onclick="requestVipSubscription()" class="text-amber-600 dark:text-amber-400 hover:text-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg transition border border-amber-200 dark:border-amber-700/50"><i class="fa-solid fa-crown"></i> طلب اشتراك VIP</a>
                 </div>
             </div>
         </nav>
@@ -123,9 +122,7 @@
         <header class="relative bg-gradient-to-tr from-slate-900 via-indigo-950 to-indigo-900 text-white py-12 md:py-20 px-4 overflow-hidden rounded-b-[40px] shadow-lg">
             <div class="absolute inset-0 math-grid-layer opacity-10 pointer-events-none"></div>
             <div class="max-w-7xl mx-auto relative z-10 flex flex-col items-center justify-center text-center space-y-6">
-                <span class="bg-amber-400/20 text-amber-300 border border-amber-300/30 px-3.5 py-2 rounded-xl text-xs font-black inline-flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-award text-amber-400 animate-bounce"></i> المنصة المنهجية الأولى بالجزائر للرياضيات
-                </span>
+                <span class="bg-amber-400/20 text-amber-300 border border-amber-300/30 px-3.5 py-2 rounded-xl text-xs font-black inline-flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-award text-amber-400 animate-bounce"></i> المنصة المنهجية الأولى بالجزائر للرياضيات</span>
                 <h2 id="dynamic-welcome-text" class="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">تعلّم الرياضيات بذكاء و بمفاهيم و أبعاد جديدة !</h2>
                 <div class="flex flex-wrap gap-3 justify-center">
                     <a href="#levels" class="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold px-6 py-3 rounded-xl shadow-lg transition text-xs md:text-sm">تصفح المستويات 🎓</a>
@@ -134,21 +131,6 @@
             </div>
         </header>
 
-        <!-- قسم الأجندة والمواعيد -->
-        <section id="agenda-section" class="py-12 px-4 relative z-10">
-            <div class="max-w-7xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white"><i class="fa-regular fa-calendar-days text-indigo-500"></i> أجندة المواعيد والأحداث</h3>
-                    <div id="admin-agenda-controls" class="hidden">
-                        <button onclick="openAgendaModal()" class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-200 transition shadow-sm"><i class="fa-solid fa-plus"></i> إضافة موعد</button>
-                    </div>
-                </div>
-                <div id="agenda-list" class="flex overflow-x-auto gap-4 pb-4 custom-scrollbar items-stretch">
-                    <!-- المواعيد ستظهر هنا -->
-                </div>
-            </div>
-        </section>
-        
         <section id="levels" class="py-16 px-4 relative z-10">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center space-y-3 mb-12"><h3 class="text-2xl md:text-4xl font-black text-slate-900 dark:text-white">بوابات الأطوار والمستويات</h3><div class="w-20 h-1.5 bg-indigo-600 mx-auto rounded-full"></div></div>
@@ -229,34 +211,13 @@
     <!-- Modals -->
     <div id="sigma-levels-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6); z-index: 999999; justify-content: center; align-items: center; font-family: 'Cairo', sans-serif; direction: rtl;"><div style="background: #1e293b; color: #f1f5f9; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; text-align: center;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 8px;"><h3 style="font-size: 18px; font-weight: bold; color: #38bdf8; margin: 0;"><i class="fa-solid fa-layer-group ml-2"></i> اختر المستوى الدراسي</h3><span onclick="sigmaCloseModal()" style="cursor: pointer; font-size: 20px; color: #94a3b8; font-weight: bold; padding: 0 5px;">&times;</span></div><div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;"><button onclick="sigmaSelectLevel(1)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الأول (السنة الأولى)</button><button onclick="sigmaSelectLevel(2)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الثاني (السنة الثانية)</button><button onclick="sigmaSelectLevel(3)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الثالث (السنة الثالثة)</button><button onclick="sigmaSelectLevel(4)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الرابع (السنة الرابعة)</button></div></div></div>
     
-    <!-- Agenda Modal -->
-    <div id="agenda-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-lg flex flex-col"><div class="bg-gradient-to-r from-indigo-500 to-indigo-700 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-regular fa-calendar-plus"></i><span>إضافة موعد جديد للأجندة</span></div><button onclick="document.getElementById('agenda-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-6 overflow-y-auto"><form id="agenda-form" onsubmit="saveAgendaEvent(event)" class="grid grid-cols-1 gap-3.5 text-xs font-bold text-slate-700 dark:text-slate-300"><div><label class="block mb-1 text-indigo-600">عنوان الموعد (مثال: بث مباشر للمراجعة):</label><input type="text" id="agenda-title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">وصف الموعد:</label><input type="text" id="agenda-desc" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div class="grid grid-cols-2 gap-3"><div><label class="block mb-1">تاريخ الموعد:</label><input type="date" id="agenda-date" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">وقت الموعد:</label><input type="time" id="agenda-time" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div></div><div class="mt-2"><button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl shadow-lg transition">حفظ الموعد 📅</button></div></form></div></div></div>
+    <!-- Agenda Modals -->
+    <div id="agenda-list-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh]"><div class="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-regular fa-calendar-days"></i><span>أجندة المواعيد والأحداث</span></div><div class="flex gap-2"><button id="btn-admin-add-agenda" onclick="openAgendaModal()" class="hidden bg-emerald-500 hover:bg-emerald-600 px-2 py-1 rounded text-xs transition"><i class="fa-solid fa-plus"></i> إضافة</button><button onclick="document.getElementById('agenda-list-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs transition">إغلاق</button></div></div><div class="p-4 overflow-y-auto flex-1 bg-slate-50 dark:bg-slate-950"><div id="agenda-list-container" class="flex flex-col gap-3"></div></div></div></div>
+    <div id="agenda-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-lg flex flex-col"><div class="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-regular fa-calendar-plus"></i><span>إضافة موعد للأجندة</span></div><button onclick="document.getElementById('agenda-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-6 overflow-y-auto"><form id="agenda-form" onsubmit="saveAgendaEvent(event)" class="grid grid-cols-1 gap-3.5 text-xs font-bold text-slate-700 dark:text-slate-300"><div><label class="block mb-1 text-emerald-600">عنوان الموعد (مثال: بث مباشر):</label><input type="text" id="agenda-title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">الوصف:</label><input type="text" id="agenda-desc" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div class="grid grid-cols-2 gap-3"><div><label class="block mb-1">التاريخ:</label><input type="date" id="agenda-date" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">الوقت:</label><input type="time" id="agenda-time" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div></div><div class="mt-2"><button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-lg transition">حفظ ونشر الموعد 📅</button></div></form></div></div></div>
     
     <!-- Calculator Modal -->
-    <div id="calculator-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm flex flex-col border border-slate-300 dark:border-slate-700">
-            <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center font-black">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-calculator text-indigo-400"></i> الآلة الحاسبة الذكية</span>
-                <button onclick="toggleCalculator()" class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-xs">إغلاق</button>
-            </div>
-            <div class="p-4">
-                <div id="calc-display" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-4 text-left text-3xl font-mono text-slate-800 dark:text-slate-100 mb-4 overflow-x-auto whitespace-nowrap" dir="ltr">0</div>
-                <div class="flex justify-between mb-3"><button onclick="toggleScientific()" id="calc-toggle-btn" class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold hover:bg-indigo-200">عرض الآلة العلمية</button><button onclick="calcClear()" class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded font-bold hover:bg-red-200">مسح (C)</button></div>
-                <div id="calc-scientific-panel" class="grid grid-cols-4 gap-2 mb-2 hidden">
-                    <div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sin')">sin</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('cos')">cos</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('tan')">tan</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcOp('^')">xʸ</div>
-                    <div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sqrt')">√</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('log')">log</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('ln')">ln</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcFunc('pi')">π</div>
-                </div>
-                <div class="grid grid-cols-4 gap-2 font-mono text-lg">
-                    <div class="calc-btn" onclick="calcInput('7')">7</div><div class="calc-btn" onclick="calcInput('8')">8</div><div class="calc-btn" onclick="calcInput('9')">9</div><div class="calc-btn calc-op" onclick="calcOp('/')">÷</div>
-                    <div class="calc-btn" onclick="calcInput('4')">4</div><div class="calc-btn" onclick="calcInput('5')">5</div><div class="calc-btn" onclick="calcInput('6')">6</div><div class="calc-btn calc-op" onclick="calcOp('*')">×</div>
-                    <div class="calc-btn" onclick="calcInput('1')">1</div><div class="calc-btn" onclick="calcInput('2')">2</div><div class="calc-btn" onclick="calcInput('3')">3</div><div class="calc-btn calc-op" onclick="calcOp('-')">-</div>
-                    <div class="calc-btn" onclick="calcInput('0')">0</div><div class="calc-btn" onclick="calcInput('.')">.</div><div class="calc-btn bg-emerald-500 text-white hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700" onclick="calcEval()">=</div><div class="calc-btn calc-op" onclick="calcOp('+')">+</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="calculator-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm flex flex-col border border-slate-300 dark:border-slate-700"><div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center font-black"><span class="flex items-center gap-2"><i class="fa-solid fa-calculator text-indigo-400"></i> الآلة الحاسبة الذكية</span><button onclick="toggleCalculator()" class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-4"><div id="calc-display" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-4 text-left text-3xl font-mono text-slate-800 dark:text-slate-100 mb-4 overflow-x-auto whitespace-nowrap" dir="ltr">0</div><div class="flex justify-between mb-3"><button onclick="toggleScientific()" id="calc-toggle-btn" class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold hover:bg-indigo-200">عرض الآلة العلمية</button><button onclick="calcClear()" class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded font-bold hover:bg-red-200">مسح (C)</button></div><div id="calc-scientific-panel" class="grid grid-cols-4 gap-2 mb-2 hidden"><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sin')">sin</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('cos')">cos</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('tan')">tan</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcOp('^')">xʸ</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sqrt')">√</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('log')">log</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('ln')">ln</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcFunc('pi')">π</div></div><div class="grid grid-cols-4 gap-2 font-mono text-lg"><div class="calc-btn" onclick="calcInput('7')">7</div><div class="calc-btn" onclick="calcInput('8')">8</div><div class="calc-btn" onclick="calcInput('9')">9</div><div class="calc-btn calc-op" onclick="calcOp('/')">÷</div><div class="calc-btn" onclick="calcInput('4')">4</div><div class="calc-btn" onclick="calcInput('5')">5</div><div class="calc-btn" onclick="calcInput('6')">6</div><div class="calc-btn calc-op" onclick="calcOp('*')">×</div><div class="calc-btn" onclick="calcInput('1')">1</div><div class="calc-btn" onclick="calcInput('2')">2</div><div class="calc-btn" onclick="calcInput('3')">3</div><div class="calc-btn calc-op" onclick="calcOp('-')">-</div><div class="calc-btn" onclick="calcInput('0')">0</div><div class="calc-btn" onclick="calcInput('.')">.</div><div class="calc-btn bg-emerald-500 text-white hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700" onclick="calcEval()">=</div><div class="calc-btn calc-op" onclick="calcOp('+')">+</div></div></div></div></div>
 
-    <!-- Modals -->
     <div id="share-resource-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-2xl flex flex-col max-h-[95vh]"><div class="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i><span>شارك مورداً مع منصة سيجما 📤</span></div><button onclick="document.getElementById('share-resource-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-6 overflow-y-auto"><div class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-3 rounded-xl text-xs font-bold mb-4 border border-emerald-200 dark:border-emerald-800/50">مرحباً بك! أي ملف تشاركه سيتم مراجعته من قبل إدارة المنصة قبل نشره للجميع. شكراً لمساهمتك في إثراء المحتوى التعليمي.</div><form id="user-share-form" onsubmit="handleUserShare(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-bold text-slate-700 dark:text-slate-300"><div class="sm:col-span-2"><label class="block mb-1 text-emerald-600">اسم المساهم (صاحب المورد):</label><input type="text" id="share-res-author" placeholder="اسمك الكريم (اختياري)..." class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"></div><div class="sm:col-span-2"><label class="block mb-1">عنوان المورد:</label><input type="text" id="share-res-title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">المستوى الدراسي:</label><select id="share-res-level" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"><option value="1AM">1AM</option><option value="2AM">2AM</option><option value="3AM">3AM</option><option value="4AM" selected>4AM</option><option value="all">الكل</option></select></div><div><label class="block mb-1">تصنيف المورد:</label><select id="share-res-type" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"><option value="summary">ملخص (PDF)</option><option value="exercises">تمارين (PDF)</option><option value="exam">اختبارات وفروض</option><option value="game">برمجيات</option><option value="whiteboard">سبورة تفاعلية</option></select></div><div class="sm:col-span-2"><label class="block mb-1">طريقة الإرفاق:</label><select id="share-res-method" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" onchange="document.getElementById('share-url-cont').classList.toggle('hidden'); document.getElementById('share-file-cont').classList.toggle('hidden');"><option value="url" selected>إدراج رابط خارجي مباشر (موصى به)</option></select></div><div id="share-url-cont" class="sm:col-span-2"><label class="block mb-1">الرابط:</label><input type="url" id="share-res-url" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" placeholder="https://..." required></div><div class="sm:col-span-2"><label class="block mb-1">وصف مختصر:</label><input type="text" id="share-res-desc" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div class="sm:col-span-2 mt-2"><button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-lg transition">إرسال للإدارة للمراجعة 🚀</button></div></form></div></div></div>
     <div id="pending-resources-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col"><div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-inbox"></i><span>مساهمات الزوار (قيد المراجعة)</span></div><button onclick="document.getElementById('pending-resources-modal').classList.add('hidden')" class="bg-slate-700 px-3 py-1 rounded text-xs">إغلاق</button></div><div class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950"><div id="pending-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div></div></div>
     <div id="student-auth-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm flex flex-col"><div class="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-users"></i><span>بوابة المشتركين 👥</span></div><button onclick="document.getElementById('student-auth-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-5"><div class="flex gap-2 mb-4 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl font-bold text-xs"><button onclick="toggleAuthTab('login')" id="tab-login" class="flex-1 bg-white dark:bg-slate-900 text-indigo-600 shadow-sm py-2 rounded-lg">تسجيل الدخول</button><button onclick="toggleAuthTab('register')" id="tab-register" class="flex-1 text-slate-500 py-2 rounded-lg">مستخدم جديد</button></div><form id="form-login" onsubmit="loginStudent(event)" class="space-y-3 text-xs font-bold"><input type="email" id="log-email" placeholder="البريد الإلكتروني" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="password" id="log-password" placeholder="كلمة المرور" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl shadow-lg">دخول</button><button type="button" onclick="resetPassword()" class="w-full text-slate-500 underline mt-2">نسيت كلمة المرور؟</button></form><form id="form-register" onsubmit="registerStudent(event)" class="space-y-3 text-xs font-bold hidden"><input type="text" id="reg-name" placeholder="الاسم الكامل" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl" required><input type="email" id="reg-email" placeholder="البريد الإلكتروني (مهم للاسترجاع)" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="tel" id="reg-phone" placeholder="رقم الهاتف" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="password" id="reg-password" placeholder="كلمة المرور" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-xl shadow-lg">إنشاء الحساب 🚀</button></form></div></div></div>
@@ -277,43 +238,20 @@
            - Anti-Tamper & Anti-Copy Protection.
            - Live Clock, Agenda, & Calculator Integrated.
            ======================================================== */
-        document.addEventListener('DOMContentLoaded',function(){
+        (()=>{
             var _0xAdm="\x6e\x61\x62\x69\x6c\x64\x61\x61\x6e\x6f\x75\x6e\x65\x40\x79\x61\x68\x6f\x6f\x2e\x63\x6f\x6d";
             var _0xDom="\x6e\x61\x62\x69\x6c\x30\x34\x30\x34\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f";
             var _0xRed="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6e\x61\x62\x69\x6c\x30\x34\x30\x34\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x69\x67\x6d\x61\x2d\x70\x6c\x61\x74\x66\x6f\x72\x6d\x65\x2f\x69\x6e\x64\x65\x78\x2e\x68\x74\x6d\x6c";
-            
-            var cHost=window.location.hostname.toLowerCase();
-            var isL=(cHost.indexOf("localhost")!==-1||cHost==="127.0.0.1"||cHost===""||window.location.protocol==="file:");
-            var isS=(isL||cHost===_0xDom||cHost.endsWith('.'+_0xDom));
-            
-            function fU(){
-                var w=document.getElementById("sigma-security-wall"),a=document.getElementById("appContainer");
-                if(w){w.style.display="none";w.remove();}
-                if(a){a.style.display="flex";a.style.flexDirection="column";a.style.visibility="visible";a.style.opacity="1";}
-            }
+            var cHost=window.location.hostname.toLowerCase();var isL=(cHost.indexOf("localhost")!==-1||cHost==="127.0.0.1"||cHost===""||window.location.protocol==="file:");var isS=(isL||cHost===_0xDom||cHost.endsWith('.'+_0xDom));
+            function fU(){var w=document.getElementById("sigma-security-wall"),a=document.getElementById("appContainer");if(w){w.style.display="none";w.remove();}if(a){a.style.display="flex";a.style.flexDirection="column";a.style.visibility="visible";a.style.opacity="1";}}
             if(isS){fU();setTimeout(fU,150);}else{setTimeout(function(){window.top.location.href=_0xRed;},3000);}
 
             const cM=document.getElementById('sigma-custom-menu');
-            document.addEventListener('contextmenu',e=>{
-                e.preventDefault();
-                if(cM){
-                    cM.style.display='flex';
-                    let x=e.clientX,y=e.clientY;
-                    const mW=cM.offsetWidth||190,mH=cM.offsetHeight||250;
-                    if(x+mW>window.innerWidth)x=window.innerWidth-mW-5;
-                    if(y+mH>window.innerHeight)y=window.innerHeight-mH-5;
-                    cM.style.left=x+'px';cM.style.top=y+'px';
-                }
-            });
+            document.addEventListener('contextmenu',e=>{e.preventDefault();if(cM){cM.style.display='flex';let x=e.clientX,y=e.clientY;const mW=cM.offsetWidth||190,mH=cM.offsetHeight||250;if(x+mW>window.innerWidth)x=window.innerWidth-mW-5;if(y+mH>window.innerHeight)y=window.innerHeight-mH-5;cM.style.left=x+'px';cM.style.top=y+'px';}});
             document.addEventListener('click',()=>{if(cM)cM.style.display='none';});
-            document.addEventListener('keydown',e=>{
-                if(e.key==='F12'||e.keyCode===123)e.preventDefault();
-                if(e.ctrlKey&&(e.key.toLowerCase()==='u'||e.key.toLowerCase()==='s'||(e.shiftKey&&(e.key.toLowerCase()==='i'||e.key.toLowerCase()==='j'||e.key.toLowerCase()==='c'))))e.preventDefault();
-            });
-
+            document.addEventListener('keydown',e=>{if(e.key==='F12'||e.keyCode===123)e.preventDefault();if(e.ctrlKey&&(e.key.toLowerCase()==='u'||e.key.toLowerCase()==='s'||(e.shiftKey&&(e.key.toLowerCase()==='i'||e.key.toLowerCase()==='j'||e.key.toLowerCase()==='c'))))e.preventDefault();});
             document.getElementById('current-year').innerText=new Date().getFullYear();
 
-            // Clock Logic
             setInterval(()=>{
                 var n=new Date(),t=document.getElementById('live-time'),d=document.getElementById('live-date');
                 if(t)t.innerText=n.toLocaleTimeString('ar-DZ',{hour12:false,hour:'2-digit',minute:'2-digit'});
@@ -326,8 +264,7 @@
                     authDomain:"\x73\x69\x67\x6d\x61\x2d\x6d\x69\x64\x64\x6c\x65\x2d\x65\x64\x75\x63\x61\x74\x69\x6f\x6e\x2e\x66\x69\x72\x65\x62\x61\x73\x65\x61\x70\x70\x2e\x63\x6f\x6d",
                     projectId:"\x73\x69\x67\x6d\x61\x2d\x6d\x69\x64\x64\x6c\x65\x2d\x65\x64\x75\x63\x61\x74\x69\x6f\x6e",
                     storageBucket:"\x73\x69\x67\x6d\x61\x2d\x6d\x69\x64\x64\x6c\x65\x2d\x65\x64\x75\x63\x61\x74\x69\x6f\x6e\x2e\x66\x69\x72\x65\x62\x61\x73\x65\x73\x74\x6f\x72\x61\x67\x65\x2e\x61\x70\x70",
-                    messagingSenderId:"678426489803",
-                    appId:"1:678426489803:web:e1542bda74f02721ddbc4e"
+                    messagingSenderId:"678426489803",appId:"1:678426489803:web:e1542bda74f02721ddbc4e"
                 });
             }
 
@@ -341,21 +278,14 @@
             function isSafeExternalUrl(v){try{const u=new URL(String(v||'').trim());return u.protocol==='https:'&&u.hostname.length>0;}catch(e){return !1;}}
             function safeHref(v){return isSafeExternalUrl(v)?String(v).trim():'#';}
             function safeCoverUrl(v){return isSafeExternalUrl(v)?String(v).trim():'';}
-            function userFriendlyError(e){if(!e)return'حدث خطأ غير متوقع.';if(e.code==='permission-denied')return'ليست لديك الصلاحية لتنفيذ هذه العملية.';if(e.code==='unauthenticated')return'يجب تسجيل الدخول أولاً.';return e.message||'حدث خطأ غير متوقع.';}
 
             async function refreshAdminStatus(user){
                 window.isAdmin=!1;if(!user)return !1;
-                try{
-                    if(user.email===_0xAdm) window.isAdmin=!0;
-                    else{const d=await window.db.collection('admins').doc(user.uid).get();window.isAdmin=d.exists&&d.data().enabled===!0;}
-                }catch(e){if(user.email===_0xAdm)window.isAdmin=!0;}
+                try{if(user.email===_0xAdm)window.isAdmin=!0;else{const d=await window.db.collection('admins').doc(user.uid).get();window.isAdmin=d.exists&&d.data().enabled===!0;}}catch(e){if(user.email===_0xAdm)window.isAdmin=!0;}
                 applyAdminUI(window.isAdmin);startProtectedListeners();return window.isAdmin;
             }
 
-            function trackDailyVisitors(){
-                const t=new Date().toLocaleDateString('en-CA'),k='sigma_visited_'+t;
-                if(!localStorage.getItem(k)){window.db.collection('statistics').doc(t).set({visitors:firebase.firestore.FieldValue.increment(1),date:t},{merge:!0}).catch(()=>{});localStorage.setItem(k,'true');}
-            }
+            function trackDailyVisitors(){const t=new Date().toLocaleDateString('en-CA'),k='sigma_visited_'+t;if(!localStorage.getItem(k)){window.db.collection('statistics').doc(t).set({visitors:firebase.firestore.FieldValue.increment(1),date:t},{merge:!0}).catch(()=>{});localStorage.setItem(k,'true');}}
 
             let rU=null,sU=null,aU=null;
             function startProtectedListeners(){
@@ -366,20 +296,22 @@
                     window.resourceList=a.filter(r=>r.status==='approved').sort((x,y)=>(y.createdAt||0)-(x.createdAt||0));
                     window.pendingResourceList=window.isAdmin?a.filter(r=>r.status==='pending').sort((x,y)=>(y.createdAt||0)-(x.createdAt||0)):[];
                     loadResourcesCards();if(window.isAdmin)renderPendingResources();
-                },()=>{window.resourceList=[];window.pendingResourceList=[];loadResourcesCards();});
+                });
                 if(window.isAdmin){
                     sU=window.db.collection('subscribers').onSnapshot(s=>{
                         window.subscribersList=s.docs.map(d=>({id:d.id,...d.data()}));renderSubscribersList();
                         const st=document.getElementById('stat-online-users');if(st)st.innerText=window.subscribersList.filter(x=>x.isOnline).length;
-                    },()=>{window.subscribersList=[];renderSubscribersList();});
+                    });
                 }
                 aU=window.db.collection('agenda').onSnapshot(s=>{
-                    const c=document.getElementById('agenda-list');if(!c)return;c.innerHTML='';
-                    if(s.empty){c.innerHTML='<div class="w-full text-center text-xs text-slate-500 font-bold">لا توجد مواعيد مبرمجة حالياً.</div>';return;}
+                    const c=document.getElementById('agenda-list-container'), b=document.getElementById('agenda-badge');
+                    if(!c)return;c.innerHTML='';
+                    if(s.empty){c.innerHTML='<div class="w-full text-center text-xs text-slate-500 font-bold py-4">لا توجد مواعيد مبرمجة حالياً.</div>';if(b)b.classList.add('hidden');return;}
                     let evs=[];s.forEach(d=>evs.push({id:d.id,...d.data()}));
+                    if(b){b.innerText=evs.length;b.classList.remove('hidden');}
                     evs.sort((a,b)=>a.dateTimestamp-b.dateTimestamp).forEach(ev=>{
-                        let b=window.isAdmin?`<button onclick="deleteAgendaEvent('${ev.id}')" class="text-red-500 hover:text-red-700 text-[10px] mt-2 block"><i class="fa-solid fa-trash"></i> حذف</button>`:'';
-                        c.innerHTML+=`<div class="min-w-[200px] bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 p-3 rounded-2xl flex-shrink-0 shadow-sm"><div class="flex items-center justify-between mb-2"><span class="bg-indigo-600 text-white text-[9px] px-2 py-0.5 rounded font-black">${escapeHtml(ev.dateString)}</span><span class="text-indigo-500 dark:text-indigo-400 text-[10px] font-bold"><i class="fa-regular fa-clock"></i> ${escapeHtml(ev.timeString)}</span></div><h4 class="font-extrabold text-slate-800 dark:text-slate-100 text-xs mb-1">${escapeHtml(ev.title)}</h4><p class="text-[10px] text-slate-600 dark:text-slate-400">${escapeHtml(ev.desc)}</p>${b}</div>`;
+                        let ad=window.isAdmin?`<button onclick="deleteAgendaEvent('${ev.id}')" class="text-red-500 hover:text-red-700 text-[10px] mt-2 block w-full text-left"><i class="fa-solid fa-trash"></i> حذف</button>`:'';
+                        c.innerHTML+=`<div class="bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 p-4 rounded-2xl shadow-sm"><div class="flex items-center justify-between mb-2"><span class="bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded font-black">${escapeHtml(ev.dateString)}</span><span class="text-indigo-500 dark:text-indigo-400 text-xs font-bold"><i class="fa-regular fa-clock"></i> ${escapeHtml(ev.timeString)}</span></div><h4 class="font-extrabold text-slate-800 dark:text-slate-100 text-sm mb-1">${escapeHtml(ev.title)}</h4><p class="text-xs text-slate-600 dark:text-slate-400">${escapeHtml(ev.desc)}</p>${ad}</div>`;
                     });
                 });
             }
@@ -428,7 +360,7 @@
                 await refreshAdminStatus(user);
                 if(user){
                     document.getElementById('btn-student-login').classList.add('hidden');document.getElementById('student-profile-btn').classList.remove('hidden');
-                    if(window.isAdmin){document.getElementById('student-name-display').innerText='المدير';}
+                    if(window.isAdmin) document.getElementById('student-name-display').innerText='المدير';
                     else{
                         window.db.collection('subscribers').doc(user.uid).onSnapshot(doc=>{
                             if(doc.exists){
@@ -438,15 +370,12 @@
                             }
                         });
                     }
-                }else{
-                    window.currentUserData=null;document.getElementById('btn-student-login').classList.remove('hidden');document.getElementById('student-profile-btn').classList.add('hidden');
-                }
+                }else{window.currentUserData=null;document.getElementById('btn-student-login').classList.remove('hidden');document.getElementById('student-profile-btn').classList.add('hidden');}
             });
             initCloudDatabase();
 
             window.addEventListener('beforeunload',()=>{const u=window.auth.currentUser;if(u&&!window.isAdmin)window.db.collection('subscribers').doc(u.uid).update({isOnline:!1}).catch(()=>{});});
 
-            // Calculator Logic
             window.calcState = { display: '0', operator: null, prev: null, scientific: false };
             window.updateCalcDisplay = function() { document.getElementById('calc-display').innerText = window.calcState.display.substring(0, 15); };
             window.calcInput = function(val) { if(window.calcState.display === '0' || window.calcState.display === 'Error') window.calcState.display = val; else window.calcState.display += val; window.updateCalcDisplay(); };
@@ -467,15 +396,14 @@
             window.toggleScientific = function() { window.calcState.scientific = !window.calcState.scientific; document.getElementById('calc-scientific-panel').classList.toggle('hidden', !window.calcState.scientific); document.getElementById('calc-toggle-btn').innerText = window.calcState.scientific ? "إخفاء الآلة العلمية" : "عرض الآلة العلمية"; };
             window.toggleCalculator = function() { document.getElementById('calculator-modal').classList.toggle('hidden'); document.getElementById('sigma-custom-menu').style.display='none';};
 
-            // Agenda Logic
             window.saveAgendaEvent = function(e){
                 e.preventDefault();const id='evt-'+Date.now();Swal.fire({title:'حفظ...',didOpen:()=>Swal.showLoading()});
                 window.db.collection('agenda').doc(id).set({title:cleanText(document.getElementById('agenda-title').value,100),desc:cleanText(document.getElementById('agenda-desc').value,500),dateString:document.getElementById('agenda-date').value,timeString:document.getElementById('agenda-time').value,dateTimestamp:new Date(document.getElementById('agenda-date').value+'T'+document.getElementById('agenda-time').value).getTime()||Date.now()}).then(()=>{document.getElementById('agenda-form').reset();document.getElementById('agenda-modal').classList.add('hidden');Swal.fire('تم','تم الإضافة','success');}).catch(()=>Swal.fire('خطأ','فشل','error'));
             };
             window.deleteAgendaEvent = function(id){Swal.fire({title:'حذف الموعد؟',showCancelButton:!0}).then(r=>{if(r.isConfirmed)window.db.collection('agenda').doc(id).delete();});};
-            window.openAgendaModal = function(){document.getElementById('agenda-modal').classList.remove('hidden');};
+            window.openAgendaModal = function(){document.getElementById('agenda-list-modal').classList.add('hidden');document.getElementById('agenda-modal').classList.remove('hidden');};
+            window.openAgendaListModal = function(){document.getElementById('agenda-list-modal').classList.remove('hidden');};
 
-            // Make functions global
             window.sigmaMenuAction=function(a){
                 const m=document.getElementById('sigma-custom-menu'),s=document.getElementById('sigma-levels-modal');if(m)m.style.display='none';
                 if(a==='top')window.scrollTo({top:0,behavior:'smooth'});else if(a==='levels'&&s)s.style.display='flex';
@@ -585,9 +513,9 @@
                 }}).then((r)=>{if(r.isConfirmed)Swal.fire('أهلاً','تم التفعيل','success');});
             };
             window.applyAdminUI=function(a){
-                const cc=document.getElementById('admin-comments-controls'),ac=document.getElementById('admin-agenda-controls');
-                if(a){document.getElementById('admin-status-bar').classList.remove('hidden');document.getElementById('admin-geogebra-panel').classList.remove('hidden');document.getElementById('admin-resource-panel').classList.remove('hidden');if(cc)cc.classList.remove('hidden');if(ac)ac.classList.remove('hidden');window.renderSubscribersList();window.renderPendingResources();}
-                else{document.getElementById('admin-status-bar').classList.add('hidden');document.getElementById('admin-geogebra-panel').classList.add('hidden');document.getElementById('admin-resource-panel').classList.add('hidden');if(cc)cc.classList.add('hidden');if(ac)ac.classList.add('hidden');}
+                const cc=document.getElementById('admin-comments-controls'),ac=document.getElementById('admin-agenda-controls'), b=document.getElementById('btn-admin-add-agenda');
+                if(a){document.getElementById('admin-status-bar').classList.remove('hidden');document.getElementById('admin-geogebra-panel').classList.remove('hidden');document.getElementById('admin-resource-panel').classList.remove('hidden');if(cc)cc.classList.remove('hidden');if(ac)ac.classList.remove('hidden');if(b)b.classList.remove('hidden');window.renderSubscribersList();window.renderPendingResources();}
+                else{document.getElementById('admin-status-bar').classList.add('hidden');document.getElementById('admin-geogebra-panel').classList.add('hidden');document.getElementById('admin-resource-panel').classList.add('hidden');if(cc)cc.classList.add('hidden');if(ac)ac.classList.add('hidden');if(b)b.classList.add('hidden');}
                 window.loadGgbLibrary();window.loadResourcesCards();
             };
             window.openPlatformSettingsModal=function(){document.getElementById('settings-modal').classList.remove('hidden');};
@@ -642,7 +570,7 @@
             window.playGameModal=function(id){const n=[{id:'internal-soroban',fileUrl:'internal:soroban'},{id:'internal-pgcd',fileUrl:'internal:pgcd'}];const r=[...n,...window.resourceList].find(x=>x.id===id);if(!r)return;const i=document.getElementById('game-iframe-player');if(r.fileUrl.startsWith('internal:')){i.src=URL.createObjectURL(new Blob([document.getElementById(r.fileUrl.split(':')[1]+'-source').innerHTML],{type:'text/html;charset=utf-8'}));}else{i.src=r.fileUrl;}document.getElementById('game-modal').classList.remove('hidden');};
             window.openReaderModal=function(u,t){document.getElementById('reader-modal-title').innerText=t||'';document.getElementById('reader-direct-download-btn').href=safeHref(u);let e=isSafeExternalUrl(u)?u:'';if(e&&e.includes('drive.google.com')&&e.includes('/view'))e=e.replace(/\/view.*/,'/preview');else if(e&&e.includes('firebasestorage'))e=`https://docs.google.com/viewer?url=${encodeURIComponent(e)}&embedded=true`;document.getElementById('reader-iframe-viewport').src=e;document.getElementById('reader-modal').classList.remove('hidden');};
             window.openWhiteboard=function(){const r=window.resourceList.find(x=>x.type==='whiteboard'||x.title.includes('سبورة'));if(r){if(r.isPaid&&!window.isAdmin)window.handlePaidResourceAccess(r.id,r.title,r.price);else window.playGameModal(r.id);}else Swal.fire('تنبيه','لم يتم إدراج السبورة بعد.','info');};
-        });
+        })();
     </script>
 </body>
 </html>
