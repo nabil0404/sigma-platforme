@@ -4,17 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://www.gstatic.com https://www.geogebra.org; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://www.geogebra.org https://*.googleusercontent.com https://docs.google.com; form-action 'self'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://www.gstatic.com https://www.geogebra.org; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://www.geogebra.org https://*.googleusercontent.com https://docs.google.com; form-action 'self'; upgrade-insecure-requests">
+    
     <title>منصة سِيجْمَا التعليمية للتعليم المتوسط - مادة الرياضيات</title>
+    
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts & Icons (Fixed Version) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+    
+    <!-- Config & Styles -->
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { cairo: ['Cairo', 'sans-serif'] }, colors: { sigma: { 50: '#f5f3ff', 600: '#6366f1', 900: '#1e1b4b', 950: '#090514' } } } } }
+    </script>
     <style>
         body{font-family:'Cairo',sans-serif;transition:background-color .3s,color .3s;user-select:none;-webkit-user-select:none}
         input,textarea,select,[contenteditable="true"],.allow-select{user-select:text!important;-webkit-user-select:text!important}
@@ -33,16 +46,22 @@
         #sigma-custom-menu{position:fixed;background-color:#1e293b;border:1px solid #334155;border-radius:8px;box-shadow:0 10px 25px -5px rgba(0,0,0,.5);display:none;flex-direction:column;min-width:190px;z-index:9999999;font-family:'Cairo',sans-serif;direction:rtl;overflow:hidden;user-select:none}
         .context-item{padding:10px 16px;color:#e2e8f0;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .2s}
         .context-item:hover{background-color:#334155;color:#fff}.context-divider{height:1px;background-color:#334155;margin:4px 0}
+        .calc-btn{background:#e2e8f0;border-radius:8px;padding:12px;font-weight:bold;color:#1e293b;transition:0.2s;text-align:center;cursor:pointer;}
+        .calc-btn:hover{background:#cbd5e1;} .dark .calc-btn{background:#334155;color:#f8fafc;} .dark .calc-btn:hover{background:#475569;}
+        .calc-op{background:#6366f1;color:white;} .calc-op:hover{background:#4f46e5;}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen">
 
+    <!-- جدار الحماية -->
     <div id="sigma-security-wall">
         <h1 style="color:#ef4444;font-size:28px;font-weight:bold;margin-bottom:10px;">🚫 عذراً، الوصول غير مصرح به!</h1>
         <p style="color:#94a3b8;font-size:18px;">هذا المحتوى محمي ومخصص للعمل داخل النطاق الرسمي لمنصة سيجما فقط.</p>
     </div>
 
+    <!-- المنصة -->
     <div id="appContainer" style="display:none;width:100%;min-height:100vh;visibility:hidden;opacity:0;">
+        
         <div id="admin-status-bar" class="bg-amber-500 text-slate-950 font-black py-2.5 px-4 flex flex-col md:flex-row justify-center items-center gap-4 text-xs md:text-sm shadow-md hidden relative z-50">
             <div><i class="fa-solid fa-screwdriver-wrench mr-1 animate-bounce"></i> أنت في وضع مدير المنصة حالياً! الصلاحيات مفعلة بالكامل.</div>
             <div class="bg-amber-600/30 px-3 py-1 rounded-lg flex gap-4 border border-amber-600/50">
@@ -68,7 +87,12 @@
                             <p class="text-[8px] md:text-[10px] text-slate-400 font-bold">بوابة التعليم المتوسط - رياضيات</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-3">
+                        <!-- الساعة الرقمية -->
+                        <div class="hidden sm:flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-400 shadow-inner min-w-[80px]">
+                            <span id="live-time" class="text-xs font-black" dir="ltr">--:--</span>
+                            <span id="live-date" class="text-[8px] font-bold">--/--/----</span>
+                        </div>
                         <div id="student-auth-container" class="flex gap-2">
                             <button onclick="openStudentAuthModal()" id="btn-student-login" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold px-3 py-1.5 rounded-lg text-[10px] md:text-xs flex items-center gap-1.5 transition-all shadow-sm">
                                 <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">دخول المشترك</span>
@@ -89,7 +113,9 @@
                     <a href="javascript:void(0)" onclick="navFilter('exam')" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">بنك الفروض والاختبارات</a>
                     <a href="javascript:void(0)" onclick="navFilter('game')" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">برمجيات وألعاب</a>
                     <a href="javascript:void(0)" onclick="openWhiteboard()" class="hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1.5 rounded-lg transition">السبورة التفاعلية</a>
-                    <a href="javascript:void(0)" onclick="requestVipSubscription()" class="text-amber-600 dark:text-amber-400 hover:text-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg transition border border-amber-200 dark:border-amber-700/50"><i class="fa-solid fa-crown"></i> طلب اشتراك VIP</a>
+                    <a href="javascript:void(0)" onclick="requestVipSubscription()" class="text-amber-600 dark:text-amber-400 hover:text-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg transition border border-amber-200 dark:border-amber-700/50">
+                        <i class="fa-solid fa-crown"></i> طلب اشتراك VIP
+                    </a>
                 </div>
             </div>
         </nav>
@@ -97,7 +123,9 @@
         <header class="relative bg-gradient-to-tr from-slate-900 via-indigo-950 to-indigo-900 text-white py-12 md:py-20 px-4 overflow-hidden rounded-b-[40px] shadow-lg">
             <div class="absolute inset-0 math-grid-layer opacity-10 pointer-events-none"></div>
             <div class="max-w-7xl mx-auto relative z-10 flex flex-col items-center justify-center text-center space-y-6">
-                <span class="bg-amber-400/20 text-amber-300 border border-amber-300/30 px-3.5 py-2 rounded-xl text-xs font-black inline-flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-award text-amber-400 animate-bounce"></i> المنصة المنهجية الأولى بالجزائر للرياضيات</span>
+                <span class="bg-amber-400/20 text-amber-300 border border-amber-300/30 px-3.5 py-2 rounded-xl text-xs font-black inline-flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-award text-amber-400 animate-bounce"></i> المنصة المنهجية الأولى بالجزائر للرياضيات
+                </span>
                 <h2 id="dynamic-welcome-text" class="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">تعلّم الرياضيات بذكاء و بمفاهيم و أبعاد جديدة !</h2>
                 <div class="flex flex-wrap gap-3 justify-center">
                     <a href="#levels" class="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold px-6 py-3 rounded-xl shadow-lg transition text-xs md:text-sm">تصفح المستويات 🎓</a>
@@ -105,6 +133,21 @@
                 </div>
             </div>
         </header>
+
+        <!-- قسم الأجندة والمواعيد -->
+        <section id="agenda-section" class="py-12 px-4 relative z-10">
+            <div class="max-w-7xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white"><i class="fa-regular fa-calendar-days text-indigo-500"></i> أجندة المواعيد والأحداث</h3>
+                    <div id="admin-agenda-controls" class="hidden">
+                        <button onclick="openAgendaModal()" class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-200 transition shadow-sm"><i class="fa-solid fa-plus"></i> إضافة موعد</button>
+                    </div>
+                </div>
+                <div id="agenda-list" class="flex overflow-x-auto gap-4 pb-4 custom-scrollbar items-stretch">
+                    <!-- المواعيد ستظهر هنا -->
+                </div>
+            </div>
+        </section>
         
         <section id="levels" class="py-16 px-4 relative z-10">
             <div class="max-w-7xl mx-auto">
@@ -143,7 +186,7 @@
         <section id="resources" class="py-16 px-4 relative z-10">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-slate-200 dark:border-slate-800 pb-6"><div class="text-center sm:text-right space-y-2"><h3 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">بنك الملفات والبرمجيات</h3><div class="w-20 h-1 bg-indigo-600 mx-auto sm:mx-0 rounded-full"></div></div><button onclick="openShareResourceModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-md transition flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-lg"></i> شارك مورداً في المنصة</button></div>
-                <div id="admin-resource-panel" class="bg-amber-50 dark:bg-slate-900/40 border-2 border-dashed border-amber-300 rounded-3xl p-6 max-w-4xl mx-auto mb-10 space-y-4 hidden shadow-sm"><div class="flex flex-col sm:flex-row justify-between items-center border-b border-amber-200 pb-3 mb-3 gap-3"><h4 class="font-black text-amber-900 dark:text-amber-400 text-sm flex items-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> لوحة الرفع والإدارة</h4><div class="flex gap-2 flex-wrap justify-center"><button type="button" onclick="openPlatformSettingsModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow"><i class="fa-solid fa-cogs"></i> إعدادات المنصة ⚙️</button><button type="button" onclick="openSubscribersPanel()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow"><i class="fa-solid fa-users"></i> إدارة المشتركين 👥</button><button type="button" onclick="openPendingResourcesModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow relative"><i class="fa-solid fa-inbox"></i> مساهمات الزوار 📥<span id="pending-count-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-5 h-5 flex justify-center items-center rounded-full shadow hidden">0</span></button></div></div><form id="resource-upload-form" onsubmit="handleResourceUpload(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs font-bold"><div class="sm:col-span-3"><label class="block mb-1">عنوان المورد:</label><input type="text" id="res-title" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" required></div><div><label class="block mb-1">المستوى الدراسي:</label><select id="res-level" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"><option value="1AM">1AM</option><option value="2AM">2AM</option><option value="3AM">3AM</option><option value="4AM" selected>4AM</option><option value="all">الكل</option></select></div><div><label class="block mb-1">تصنيف المورد:</label><select id="res-type" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"><option value="summary">ملخص (PDF)</option><option value="exercises">تمارين (PDF)</option><option value="exam">اختبارات وفروض</option><option value="game">برمجيات</option><option value="whiteboard">سبورة تفاعلية</option></select></div><div class="grid grid-cols-2 gap-2"><div><label class="block mb-1">نوع المورد:</label><select id="res-price-type" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" onchange="togglePriceInput('res-price-type', 'res-price')"><option value="free" selected>مجاني</option><option value="paid">مدفوع</option></select></div><div><label class="block mb-1 text-red-600">السعر (د.ج):</label><input type="number" id="res-price" class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg opacity-50" value="0" min="0" disabled></div></div><div class="sm:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block mb-1 text-emerald-700 dark:text-emerald-400">صورة الغلاف المصغرة (اختياري):</label><input type="file" id="res-cover" accept="image/*" class="w-full p-1.5 bg-white dark:bg-slate-900 border border-emerald-300 rounded-lg"></div><div><label class="block mb-1">من إعداد المورد (اختياري):</label><input type="text" id="res-author" placeholder="اسم الأستاذ أو صانع المحتوى..." class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"></div></div><div class="sm:col-span-3"><label class="block mb-1">طريقة الإرفاق:</label><select id="res-upload-method" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" onchange="toggleUploadMethod()"><option value="url" selected>إدراج رابط خارجي مباشر (موصى به)</option></select></div><div id="url-upload-container" class="sm:col-span-3"><label class="block mb-1">الرابط الخارجي:</label><input type="url" id="res-url" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" placeholder="https://..."></div><div class="sm:col-span-3"><label class="block mb-1">الوصف المبسط:</label><input type="text" id="res-desc" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" required></div><div class="sm:col-span-3"><button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-slate-950 py-2.5 rounded-lg shadow-sm">حفظ ونشر المورد 🚀</button></div></form></div>
+                <div id="admin-resource-panel" class="bg-amber-50 dark:bg-slate-900/40 border-2 border-dashed border-amber-300 rounded-3xl p-6 max-w-4xl mx-auto mb-10 space-y-4 hidden shadow-sm"><div class="flex flex-col sm:flex-row justify-between items-center border-b border-amber-200 pb-3 mb-3 gap-3"><h4 class="font-black text-amber-900 dark:text-amber-400 text-sm flex items-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> لوحة الرفع والإدارة</h4><div class="flex gap-2 flex-wrap justify-center"><button type="button" onclick="openPlatformSettingsModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow"><i class="fa-solid fa-cogs"></i> إعدادات المنصة ⚙️</button><button type="button" onclick="openSubscribersPanel()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow"><i class="fa-solid fa-users"></i> إدارة المشتركين 👥</button><button type="button" onclick="openPendingResourcesModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow relative"><i class="fa-solid fa-inbox"></i> مساهمات الزوار 📥<span id="pending-count-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-5 h-5 flex justify-center items-center rounded-full shadow hidden">0</span></button></div></div><form id="resource-upload-form" onsubmit="handleResourceUpload(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs font-bold"><div class="sm:col-span-3"><label class="block mb-1">عنوان المورد:</label><input type="text" id="res-title" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" required></div><div><label class="block mb-1">المستوى الدراسي:</label><select id="res-level" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"><option value="1AM">1AM</option><option value="2AM">2AM</option><option value="3AM">3AM</option><option value="4AM" selected>4AM</option><option value="all">الكل</option></select></div><div><label class="block mb-1">تصنيف المورد:</label><select id="res-type" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"><option value="summary">ملخص (PDF)</option><option value="exercises">تمارين (PDF)</option><option value="exam">اختبارات وفروض</option><option value="game">برمجيات</option><option value="whiteboard">سبورة تفاعلية</option></select></div><div class="grid grid-cols-2 gap-2"><div><label class="block mb-1">نوع المورد:</label><select id="res-price-type" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" onchange="togglePriceInput('res-price-type', 'res-price')"><option value="free" selected>مجاني</option><option value="paid">مدفوع</option></select></div><div><label class="block mb-1 text-red-600">السعر (د.ج):</label><input type="number" id="res-price" class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg opacity-50" value="0" min="0" disabled></div></div><div class="sm:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block mb-1 text-emerald-700 dark:text-emerald-400">صورة الغلاف المصغرة (اختياري):</label><input type="file" id="res-cover" accept="image/*" class="w-full p-1.5 bg-white dark:bg-slate-900 border border-emerald-300 rounded-lg"></div><div><label class="block mb-1">من إعداد المورد (اختياري):</label><input type="text" id="res-author" placeholder="اسم الأستاذ أو صانع المحتوى..." class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg"></div></div><div class="sm:col-span-3"><label class="block mb-1">طريقة الإرفاق:</label><select id="res-upload-method" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" onchange="toggleUploadMethod()"><option value="url" selected>إدراج رابط خارجي مباشر (موصى به)</option></select></div><div id="url-upload-container" class="sm:col-span-3"><label class="block mb-1">الرابط الخارجي:</label><input type="url" id="res-url" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" placeholder="https://..." required></div><div class="sm:col-span-3"><label class="block mb-1">الوصف المبسط:</label><input type="text" id="res-desc" class="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-300 rounded-lg" required></div><div class="sm:col-span-3"><button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-slate-950 py-2.5 rounded-lg shadow-sm">حفظ ونشر المورد 🚀</button></div></form></div>
                 <div class="flex flex-wrap justify-center gap-2 text-[10px] md:text-xs font-bold mb-8"><button onclick="filterResources('all')" id="btn-f-all" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl shadow-sm transition">الكل</button><button onclick="filterResources('summary')" id="btn-f-summary" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition">ملخصات</button><button onclick="filterResources('exercises')" id="btn-f-exercises" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition">تمارين</button><button onclick="filterResources('exam')" id="btn-f-exam" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition">اختبارات وفروض</button><button onclick="filterResources('game')" id="btn-f-game" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition">برمجيات</button></div>
                 <div id="resources-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"></div>
             </div>
@@ -173,6 +216,8 @@
             <div class="context-item" onclick="sigmaMenuAction('top')"><i class="fa-solid fa-house ml-2 text-amber-400"></i> القائمة الرئيسية</div>
             <div class="context-item" onclick="sigmaMenuAction('levels')"><i class="fa-solid fa-layer-group ml-2 text-blue-400"></i> اختيار المستوى</div>
             <div class="context-divider"></div>
+            <div class="context-item" onclick="toggleCalculator()"><i class="fa-solid fa-calculator ml-2 text-sky-400"></i> آلة حاسبة ذكية</div>
+            <div class="context-divider"></div>
             <div class="context-item" onclick="sigmaMenuAction('theme')"><i class="fa-solid fa-circle-half-stroke ml-2 text-emerald-400"></i> تبديل الوضع (ليلي/نهاري)</div>
             <div class="context-item" onclick="sigmaMenuAction('admin')"><i class="fa-solid fa-screwdriver-wrench ml-2 text-red-400"></i> إدارة المنصة</div>
             <div class="context-divider"></div>
@@ -181,8 +226,37 @@
         </div>
     </div>
 
-    <!-- Modals (Levels, Share, Pending, Auth, Settings, Subscribers, Payment, Edit, Reader, Game) -->
+    <!-- Modals -->
     <div id="sigma-levels-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6); z-index: 999999; justify-content: center; align-items: center; font-family: 'Cairo', sans-serif; direction: rtl;"><div style="background: #1e293b; color: #f1f5f9; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; text-align: center;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 8px;"><h3 style="font-size: 18px; font-weight: bold; color: #38bdf8; margin: 0;"><i class="fa-solid fa-layer-group ml-2"></i> اختر المستوى الدراسي</h3><span onclick="sigmaCloseModal()" style="cursor: pointer; font-size: 20px; color: #94a3b8; font-weight: bold; padding: 0 5px;">&times;</span></div><div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;"><button onclick="sigmaSelectLevel(1)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الأول (السنة الأولى)</button><button onclick="sigmaSelectLevel(2)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الثاني (السنة الثانية)</button><button onclick="sigmaSelectLevel(3)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الثالث (السنة الثالثة)</button><button onclick="sigmaSelectLevel(4)" style="background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#334155'">المستوى الرابع (السنة الرابعة)</button></div></div></div>
+    
+    <!-- Agenda Modal -->
+    <div id="agenda-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-lg flex flex-col"><div class="bg-gradient-to-r from-indigo-500 to-indigo-700 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-regular fa-calendar-plus"></i><span>إضافة موعد جديد للأجندة</span></div><button onclick="document.getElementById('agenda-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-6 overflow-y-auto"><form id="agenda-form" onsubmit="saveAgendaEvent(event)" class="grid grid-cols-1 gap-3.5 text-xs font-bold text-slate-700 dark:text-slate-300"><div><label class="block mb-1 text-indigo-600">عنوان الموعد (مثال: بث مباشر للمراجعة):</label><input type="text" id="agenda-title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">وصف الموعد:</label><input type="text" id="agenda-desc" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div class="grid grid-cols-2 gap-3"><div><label class="block mb-1">تاريخ الموعد:</label><input type="date" id="agenda-date" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">وقت الموعد:</label><input type="time" id="agenda-time" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div></div><div class="mt-2"><button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl shadow-lg transition">حفظ الموعد 📅</button></div></form></div></div></div>
+    
+    <!-- Calculator Modal -->
+    <div id="calculator-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm flex flex-col border border-slate-300 dark:border-slate-700">
+            <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center font-black">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-calculator text-indigo-400"></i> الآلة الحاسبة الذكية</span>
+                <button onclick="toggleCalculator()" class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-xs">إغلاق</button>
+            </div>
+            <div class="p-4">
+                <div id="calc-display" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-4 text-left text-3xl font-mono text-slate-800 dark:text-slate-100 mb-4 overflow-x-auto whitespace-nowrap" dir="ltr">0</div>
+                <div class="flex justify-between mb-3"><button onclick="toggleScientific()" id="calc-toggle-btn" class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold hover:bg-indigo-200">عرض الآلة العلمية</button><button onclick="calcClear()" class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded font-bold hover:bg-red-200">مسح (C)</button></div>
+                <div id="calc-scientific-panel" class="grid grid-cols-4 gap-2 mb-2 hidden">
+                    <div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sin')">sin</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('cos')">cos</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('tan')">tan</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcOp('^')">xʸ</div>
+                    <div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('sqrt')">√</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('log')">log</div><div class="calc-btn text-xs bg-sky-100 dark:bg-sky-900" onclick="calcFunc('ln')">ln</div><div class="calc-btn text-xs bg-amber-100 dark:bg-amber-900" onclick="calcFunc('pi')">π</div>
+                </div>
+                <div class="grid grid-cols-4 gap-2 font-mono text-lg">
+                    <div class="calc-btn" onclick="calcInput('7')">7</div><div class="calc-btn" onclick="calcInput('8')">8</div><div class="calc-btn" onclick="calcInput('9')">9</div><div class="calc-btn calc-op" onclick="calcOp('/')">÷</div>
+                    <div class="calc-btn" onclick="calcInput('4')">4</div><div class="calc-btn" onclick="calcInput('5')">5</div><div class="calc-btn" onclick="calcInput('6')">6</div><div class="calc-btn calc-op" onclick="calcOp('*')">×</div>
+                    <div class="calc-btn" onclick="calcInput('1')">1</div><div class="calc-btn" onclick="calcInput('2')">2</div><div class="calc-btn" onclick="calcInput('3')">3</div><div class="calc-btn calc-op" onclick="calcOp('-')">-</div>
+                    <div class="calc-btn" onclick="calcInput('0')">0</div><div class="calc-btn" onclick="calcInput('.')">.</div><div class="calc-btn bg-emerald-500 text-white hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700" onclick="calcEval()">=</div><div class="calc-btn calc-op" onclick="calcOp('+')">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
     <div id="share-resource-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-2xl flex flex-col max-h-[95vh]"><div class="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i><span>شارك مورداً مع منصة سيجما 📤</span></div><button onclick="document.getElementById('share-resource-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-6 overflow-y-auto"><div class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-3 rounded-xl text-xs font-bold mb-4 border border-emerald-200 dark:border-emerald-800/50">مرحباً بك! أي ملف تشاركه سيتم مراجعته من قبل إدارة المنصة قبل نشره للجميع. شكراً لمساهمتك في إثراء المحتوى التعليمي.</div><form id="user-share-form" onsubmit="handleUserShare(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-bold text-slate-700 dark:text-slate-300"><div class="sm:col-span-2"><label class="block mb-1 text-emerald-600">اسم المساهم (صاحب المورد):</label><input type="text" id="share-res-author" placeholder="اسمك الكريم (اختياري)..." class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"></div><div class="sm:col-span-2"><label class="block mb-1">عنوان المورد:</label><input type="text" id="share-res-title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div><label class="block mb-1">المستوى الدراسي:</label><select id="share-res-level" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"><option value="1AM">1AM</option><option value="2AM">2AM</option><option value="3AM">3AM</option><option value="4AM" selected>4AM</option><option value="all">الكل</option></select></div><div><label class="block mb-1">تصنيف المورد:</label><select id="share-res-type" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"><option value="summary">ملخص (PDF)</option><option value="exercises">تمارين (PDF)</option><option value="exam">اختبارات وفروض</option><option value="game">برمجيات</option><option value="whiteboard">سبورة تفاعلية</option></select></div><div class="sm:col-span-2"><label class="block mb-1">طريقة الإرفاق:</label><select id="share-res-method" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" onchange="document.getElementById('share-url-cont').classList.toggle('hidden'); document.getElementById('share-file-cont').classList.toggle('hidden');"><option value="url" selected>إدراج رابط خارجي مباشر (موصى به)</option></select></div><div id="share-url-cont" class="sm:col-span-2"><label class="block mb-1">الرابط:</label><input type="url" id="share-res-url" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" placeholder="https://..." required></div><div class="sm:col-span-2"><label class="block mb-1">وصف مختصر:</label><input type="text" id="share-res-desc" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl" required></div><div class="sm:col-span-2 mt-2"><button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-lg transition">إرسال للإدارة للمراجعة 🚀</button></div></form></div></div></div>
     <div id="pending-resources-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col"><div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-inbox"></i><span>مساهمات الزوار (قيد المراجعة)</span></div><button onclick="document.getElementById('pending-resources-modal').classList.add('hidden')" class="bg-slate-700 px-3 py-1 rounded text-xs">إغلاق</button></div><div class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950"><div id="pending-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div></div></div>
     <div id="student-auth-modal" class="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4"><div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm flex flex-col"><div class="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white px-6 py-4 flex justify-between items-center font-black"><div class="flex items-center gap-2"><i class="fa-solid fa-users"></i><span>بوابة المشتركين 👥</span></div><button onclick="document.getElementById('student-auth-modal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs">إغلاق</button></div><div class="p-5"><div class="flex gap-2 mb-4 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl font-bold text-xs"><button onclick="toggleAuthTab('login')" id="tab-login" class="flex-1 bg-white dark:bg-slate-900 text-indigo-600 shadow-sm py-2 rounded-lg">تسجيل الدخول</button><button onclick="toggleAuthTab('register')" id="tab-register" class="flex-1 text-slate-500 py-2 rounded-lg">مستخدم جديد</button></div><form id="form-login" onsubmit="loginStudent(event)" class="space-y-3 text-xs font-bold"><input type="email" id="log-email" placeholder="البريد الإلكتروني" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="password" id="log-password" placeholder="كلمة المرور" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl shadow-lg">دخول</button><button type="button" onclick="resetPassword()" class="w-full text-slate-500 underline mt-2">نسيت كلمة المرور؟</button></form><form id="form-register" onsubmit="registerStudent(event)" class="space-y-3 text-xs font-bold hidden"><input type="text" id="reg-name" placeholder="الاسم الكامل" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl" required><input type="email" id="reg-email" placeholder="البريد الإلكتروني (مهم للاسترجاع)" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="tel" id="reg-phone" placeholder="رقم الهاتف" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><input type="password" id="reg-password" placeholder="كلمة المرور" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 rounded-xl text-left" dir="ltr" required><button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-xl shadow-lg">إنشاء الحساب 🚀</button></form></div></div></div>
@@ -197,7 +271,12 @@
     <template id="pgcd-source"><!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>محلل PGCD</title><style>body{font-family:sans-serif;background:#f8fafc;padding:20px;text-align:center;}.box{max-width:800px;margin:auto;background:white;padding:30px;border-radius:15px;box-shadow:0 4px 6px rgba(0,0,0,0.1);}input{padding:15px;font-size:18px;margin:10px;width:40%;text-align:center;}button{background:#4f46e5;color:white;padding:15px 30px;border:none;border-radius:10px;font-size:18px;cursor:pointer;}.res-box{background:#1e3a8a;color:white;padding:20px;font-size:24px;margin-top:20px;border-radius:10px;}.steps{text-align:left;direction:ltr;background:#f1f5f9;padding:20px;margin-top:20px;border-radius:10px;font-family:monospace;font-size:18px;}</style></head><body><div class="box"><h2>محلل ومفسر PGCD (طريقة إقليدس)</h2><div><input type="number" id="num-a" placeholder="العدد الأول (a)"><input type="number" id="num-b" placeholder="العدد الثاني (b)"></div><button onclick="calc()">احسب بالتفصيل 🚀</button><div id="res" style="display:none;"><div class="res-box" id="pgcd-val"></div><div class="steps" id="euclid-steps"></div><div class="steps" style="text-align:center;color:#047857;font-weight:bold;" id="simp-frac"></div></div></div><script>function calc(){let a=parseInt(document.getElementById('num-a').value);let b=parseInt(document.getElementById('num-b').value);if(isNaN(a)||isNaN(b)||a<=0||b<=0)return alert('يرجى إدخال أعداد طبيعية أكبر من الصفر');let x=Math.max(a,b),y=Math.min(a,b);let eSteps=[];let oa=x,ob=y;while(y>0){let q=Math.floor(x/y),r=x%y;eSteps.push(x+' = '+y+' × '+q+' + '+r);x=y;y=r;}document.getElementById('pgcd-val').innerText="PGCD("+oa+", "+ob+") = "+x;document.getElementById('euclid-steps').innerHTML=eSteps.join('<br>');document.getElementById('simp-frac').innerHTML="الكسر المختزل: "+(oa/x)+' / '+(ob/x);document.getElementById('res').style.display='block';}</script></body></html></template>
 
     <script>
-        /* Native Obfuscated Sigma Engine - DO NOT USE EXTERNAL OBFUSCATOR ON THIS BLOCK */
+        /* ========================================================
+           SIGMA SECURITY V2 - (NATIVE OBFUSCATED ENGINE)
+           - No external obfuscation needed.
+           - Anti-Tamper & Anti-Copy Protection.
+           - Live Clock, Agenda, & Calculator Integrated.
+           ======================================================== */
         document.addEventListener('DOMContentLoaded',function(){
             var _0xAdm="\x6e\x61\x62\x69\x6c\x64\x61\x61\x6e\x6f\x75\x6e\x65\x40\x79\x61\x68\x6f\x6f\x2e\x63\x6f\x6d";
             var _0xDom="\x6e\x61\x62\x69\x6c\x30\x34\x30\x34\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f";
@@ -234,6 +313,13 @@
 
             document.getElementById('current-year').innerText=new Date().getFullYear();
 
+            // Clock Logic
+            setInterval(()=>{
+                var n=new Date(),t=document.getElementById('live-time'),d=document.getElementById('live-date');
+                if(t)t.innerText=n.toLocaleTimeString('ar-DZ',{hour12:false,hour:'2-digit',minute:'2-digit'});
+                if(d)d.innerText=n.toLocaleDateString('ar-DZ',{year:'numeric',month:'numeric',day:'numeric'});
+            },1000);
+
             if(!firebase.apps.length){
                 firebase.initializeApp({
                     apiKey:"\x41\x49\x7a\x61\x53\x79\x43\x2d\x37\x70\x70\x33\x6c\x53\x62\x33\x6d\x70\x77\x31\x47\x72\x72\x62\x74\x44\x78\x34\x75\x52\x35\x38\x77\x51\x5f\x68\x68\x7a\x6b",
@@ -245,8 +331,7 @@
                 });
             }
 
-            window.db=firebase.firestore();
-            window.auth=firebase.auth();
+            window.db=firebase.firestore();window.auth=firebase.auth();
             window.ggbList=[];window.resourceList=[];window.pendingResourceList=[];window.subscribersList=[];
             window.isAdmin=!1;window.currentUserData=null;window.currentFilter='all';window.currentLevelFilter='all';
             window.platformVipPrice=0;window.isCommentsEnabled=!0;window.platformContactLinks={fb:'',tg:'',phone:'',wa:''};
@@ -272,9 +357,9 @@
                 if(!localStorage.getItem(k)){window.db.collection('statistics').doc(t).set({visitors:firebase.firestore.FieldValue.increment(1),date:t},{merge:!0}).catch(()=>{});localStorage.setItem(k,'true');}
             }
 
-            let rU=null,sU=null;
+            let rU=null,sU=null,aU=null;
             function startProtectedListeners(){
-                if(rU){rU();rU=null;}if(sU){sU();sU=null;}
+                if(rU){rU();rU=null;}if(sU){sU();sU=null;}if(aU){aU();aU=null;}
                 const rq=window.isAdmin?window.db.collection('resources'):window.db.collection('resources').where('status','==','approved');
                 rU=rq.onSnapshot(s=>{
                     const a=s.docs.map(d=>({id:d.id,...d.data()}));
@@ -288,6 +373,15 @@
                         const st=document.getElementById('stat-online-users');if(st)st.innerText=window.subscribersList.filter(x=>x.isOnline).length;
                     },()=>{window.subscribersList=[];renderSubscribersList();});
                 }
+                aU=window.db.collection('agenda').onSnapshot(s=>{
+                    const c=document.getElementById('agenda-list');if(!c)return;c.innerHTML='';
+                    if(s.empty){c.innerHTML='<div class="w-full text-center text-xs text-slate-500 font-bold">لا توجد مواعيد مبرمجة حالياً.</div>';return;}
+                    let evs=[];s.forEach(d=>evs.push({id:d.id,...d.data()}));
+                    evs.sort((a,b)=>a.dateTimestamp-b.dateTimestamp).forEach(ev=>{
+                        let b=window.isAdmin?`<button onclick="deleteAgendaEvent('${ev.id}')" class="text-red-500 hover:text-red-700 text-[10px] mt-2 block"><i class="fa-solid fa-trash"></i> حذف</button>`:'';
+                        c.innerHTML+=`<div class="min-w-[200px] bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 p-3 rounded-2xl flex-shrink-0 shadow-sm"><div class="flex items-center justify-between mb-2"><span class="bg-indigo-600 text-white text-[9px] px-2 py-0.5 rounded font-black">${escapeHtml(ev.dateString)}</span><span class="text-indigo-500 dark:text-indigo-400 text-[10px] font-bold"><i class="fa-regular fa-clock"></i> ${escapeHtml(ev.timeString)}</span></div><h4 class="font-extrabold text-slate-800 dark:text-slate-100 text-xs mb-1">${escapeHtml(ev.title)}</h4><p class="text-[10px] text-slate-600 dark:text-slate-400">${escapeHtml(ev.desc)}</p>${b}</div>`;
+                    });
+                });
             }
 
             function initCloudDatabase(){
@@ -351,6 +445,35 @@
             initCloudDatabase();
 
             window.addEventListener('beforeunload',()=>{const u=window.auth.currentUser;if(u&&!window.isAdmin)window.db.collection('subscribers').doc(u.uid).update({isOnline:!1}).catch(()=>{});});
+
+            // Calculator Logic
+            window.calcState = { display: '0', operator: null, prev: null, scientific: false };
+            window.updateCalcDisplay = function() { document.getElementById('calc-display').innerText = window.calcState.display.substring(0, 15); };
+            window.calcInput = function(val) { if(window.calcState.display === '0' || window.calcState.display === 'Error') window.calcState.display = val; else window.calcState.display += val; window.updateCalcDisplay(); };
+            window.calcOp = function(op) { window.calcState.prev = parseFloat(window.calcState.display); window.calcState.operator = op; window.calcState.display = '0'; };
+            window.calcEval = function() {
+                if(window.calcState.operator && window.calcState.prev !== null) {
+                    let c = parseFloat(window.calcState.display), r = 0;
+                    switch(window.calcState.operator) { case '+': r=window.calcState.prev+c; break; case '-': r=window.calcState.prev-c; break; case '*': r=window.calcState.prev*c; break; case '/': r=c===0?'Error':window.calcState.prev/c; break; case '^': r=Math.pow(window.calcState.prev,c); break;}
+                    window.calcState.display = String(r); window.calcState.operator = null; window.calcState.prev = null; window.updateCalcDisplay();
+                }
+            };
+            window.calcFunc = function(f) {
+                let c = parseFloat(window.calcState.display), r = 0;
+                switch(f) { case 'sin': r=Math.sin(c*Math.PI/180); break; case 'cos': r=Math.cos(c*Math.PI/180); break; case 'tan': r=Math.tan(c*Math.PI/180); break; case 'sqrt': r=c<0?'Error':Math.sqrt(c); break; case 'log': r=c<=0?'Error':Math.log10(c); break; case 'ln': r=c<=0?'Error':Math.log(c); break; case 'pi': r=Math.PI; break;}
+                if(window.calcState.display === 'Error') r = 'Error'; window.calcState.display = String(r); window.updateCalcDisplay();
+            };
+            window.calcClear = function() { window.calcState = { display: '0', operator: null, prev: null, scientific: window.calcState.scientific }; window.updateCalcDisplay(); };
+            window.toggleScientific = function() { window.calcState.scientific = !window.calcState.scientific; document.getElementById('calc-scientific-panel').classList.toggle('hidden', !window.calcState.scientific); document.getElementById('calc-toggle-btn').innerText = window.calcState.scientific ? "إخفاء الآلة العلمية" : "عرض الآلة العلمية"; };
+            window.toggleCalculator = function() { document.getElementById('calculator-modal').classList.toggle('hidden'); document.getElementById('sigma-custom-menu').style.display='none';};
+
+            // Agenda Logic
+            window.saveAgendaEvent = function(e){
+                e.preventDefault();const id='evt-'+Date.now();Swal.fire({title:'حفظ...',didOpen:()=>Swal.showLoading()});
+                window.db.collection('agenda').doc(id).set({title:cleanText(document.getElementById('agenda-title').value,100),desc:cleanText(document.getElementById('agenda-desc').value,500),dateString:document.getElementById('agenda-date').value,timeString:document.getElementById('agenda-time').value,dateTimestamp:new Date(document.getElementById('agenda-date').value+'T'+document.getElementById('agenda-time').value).getTime()||Date.now()}).then(()=>{document.getElementById('agenda-form').reset();document.getElementById('agenda-modal').classList.add('hidden');Swal.fire('تم','تم الإضافة','success');}).catch(()=>Swal.fire('خطأ','فشل','error'));
+            };
+            window.deleteAgendaEvent = function(id){Swal.fire({title:'حذف الموعد؟',showCancelButton:!0}).then(r=>{if(r.isConfirmed)window.db.collection('agenda').doc(id).delete();});};
+            window.openAgendaModal = function(){document.getElementById('agenda-modal').classList.remove('hidden');};
 
             // Make functions global
             window.sigmaMenuAction=function(a){
@@ -462,9 +585,9 @@
                 }}).then((r)=>{if(r.isConfirmed)Swal.fire('أهلاً','تم التفعيل','success');});
             };
             window.applyAdminUI=function(a){
-                const cc=document.getElementById('admin-comments-controls');
-                if(a){document.getElementById('admin-status-bar').classList.remove('hidden');document.getElementById('admin-geogebra-panel').classList.remove('hidden');document.getElementById('admin-resource-panel').classList.remove('hidden');if(cc)cc.classList.remove('hidden');window.renderSubscribersList();window.renderPendingResources();}
-                else{document.getElementById('admin-status-bar').classList.add('hidden');document.getElementById('admin-geogebra-panel').classList.add('hidden');document.getElementById('admin-resource-panel').classList.add('hidden');if(cc)cc.classList.add('hidden');}
+                const cc=document.getElementById('admin-comments-controls'),ac=document.getElementById('admin-agenda-controls');
+                if(a){document.getElementById('admin-status-bar').classList.remove('hidden');document.getElementById('admin-geogebra-panel').classList.remove('hidden');document.getElementById('admin-resource-panel').classList.remove('hidden');if(cc)cc.classList.remove('hidden');if(ac)ac.classList.remove('hidden');window.renderSubscribersList();window.renderPendingResources();}
+                else{document.getElementById('admin-status-bar').classList.add('hidden');document.getElementById('admin-geogebra-panel').classList.add('hidden');document.getElementById('admin-resource-panel').classList.add('hidden');if(cc)cc.classList.add('hidden');if(ac)ac.classList.add('hidden');}
                 window.loadGgbLibrary();window.loadResourcesCards();
             };
             window.openPlatformSettingsModal=function(){document.getElementById('settings-modal').classList.remove('hidden');};
